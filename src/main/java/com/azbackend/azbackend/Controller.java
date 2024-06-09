@@ -21,6 +21,11 @@ public class Controller {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @GetMapping("/")
+    public String aabb() {
+        return "ECHOing";
+    }
+
     @GetMapping("/get")
     public List<String> aa() {
         List<String> a = new ArrayList<>();

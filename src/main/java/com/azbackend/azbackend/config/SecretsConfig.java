@@ -16,53 +16,22 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SecretsConfig {
-
-    @Value("${db.postgres.password}")
-    private String password;
-
-    @Value("${db.postgres.username}")
-    private String username;
-    @Value("${db.postgres.url}")
-    private String url;
-
-
     @Bean
     public SecretsModel getSecrets() {
-        try {
             return getSecretsFromKKeyVault();
-        }
-        catch(Exception e) {
-            SecretsModel secretsModel = new SecretsModel(username, password, url);
-            return secretsModel;
-        }
-
     }
 
-    //TODO: add key vault config
     private SecretsModel getSecretsFromKKeyVault() {
-        String keyVaultName = "testvaultyash2000";
+        String keyVaultName = System.getenv("KEY_VAULT");
         String keyVaultUri = "https://" + keyVaultName + ".vault.azure.net";
         SecretClient secretClient = new SecretClientBuilder()
                 .vaultUrl(keyVaultUri)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
-        KeyVaultSecret postgresServer = secretClient.getSecret("postgresServer");
-        KeyVaultSecret postgresUsername = secretClient.getSecret("postgresUsername");
-        KeyVaultSecret postgresDbPassword = secretClient.getSecret("postgresDbPassword");
+        KeyVaultSecret postgresServer = secretClient.getSecret("flexiUrl");
+        KeyVaultSecret postgresUsername = secretClient.getSecret("flexiUser");
+        KeyVaultSecret postgresDbPassword = secretClient.getSecret("flexiPassword");
         SecretsModel secretsModel = new SecretsModel(postgresUsername.getValue(), postgresDbPassword.getValue(), postgresServer.getValue());
         return secretsModel;
     }
-
-//    private String getStoredValue() {
-//        String keyVaultName = "testvaultyash2000";
-//        String keyVaultUri = "https://" + keyVaultName + ".vault.azure.net";
-//        SecretClient secretClient = new SecretClientBuilder()
-//                .vaultUrl(keyVaultUri)
-//                .credential(new DefaultAzureCredentialBuilder().build())
-//                .buildClient();
-//        KeyVaultSecret postgresServer = secretClient.getSecret("postgresServer");
-//        KeyVaultSecret postgresUsername = secretClient.getSecret("postgresUsername");
-//        KeyVaultSecret postgresDbPassword = secretClient.getSecret("postgresDbPassword");
-//        return storedSecret.getValue();
-//    }
 }

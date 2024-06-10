@@ -11,13 +11,18 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @RequiredArgsConstructor
 public class DaoConfig {
     private final SecretsModel secretsModel;
+
     @Bean
     public NamedParameterJdbcTemplate mysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(secretsModel.datasourceUrl());
-        dataSource.setUsername(secretsModel.datasourceUsername());
-        dataSource.setPassword(secretsModel.datasourcePassword());
-        return new NamedParameterJdbcTemplate(dataSource);
+        try {
+            dataSource.setDriverClassName("org.postgresql.Driver");
+            dataSource.setUrl(secretsModel.datasourceUrl());
+            dataSource.setUsername(secretsModel.datasourceUsername());
+            dataSource.setPassword(secretsModel.datasourcePassword());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+            return new NamedParameterJdbcTemplate(dataSource);
     }
 }

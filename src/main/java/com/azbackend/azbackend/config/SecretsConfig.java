@@ -1,20 +1,13 @@
 package com.azbackend.azbackend.config;
 
+import com.azbackend.azbackend.Pojos.SecretsModel;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-
-import com.azbackend.azbackend.Pojos.SecretsModel;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import javax.sql.DataSource;
 
 @Configuration
 public class SecretsConfig {
@@ -24,6 +17,12 @@ public class SecretsConfig {
     }
 
     private SecretsModel getSecretsFromKKeyVault() {
+        String clientId = System.getenv("CLIENT_ID");
+        String clientSecret = System.getenv("CLIENT_SECRET");
+        String tenantId = System.getenv("TENANT_ID");
+        System.out.println("clientId=" + clientId);
+        System.out.println("clientSecret=" + clientSecret);
+        System.out.println("tenantId=" + tenantId);
         ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("CLIENT_ID"))
                 .clientSecret(System.getenv("CLIENT_SECRET"))

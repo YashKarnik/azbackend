@@ -31,6 +31,7 @@ public class SecretsConfig {
 
         String keyVaultName = System.getenv("KEY_VAULT");
         String keyVaultUri = "https://" + keyVaultName + ".vault.azure.net";
+        System.out.println("keyVaultName=" + keyVaultName);
         SecretClient secretClient = new SecretClientBuilder()
                 .vaultUrl(keyVaultUri)
                 .credential(clientSecretCredential)

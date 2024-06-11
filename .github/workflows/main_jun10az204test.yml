@@ -2,10 +2,11 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy JAR app to Azure Web App - Jun10Az204Test
-env: # Or as an environment variable
+env:
     CLIENT_ID: ${{ secrets.CLIENT_ID }}
     CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
     TENANT_ID: ${{ secrets.TENANT_ID }}
+    KEY_VAULT: ${{ secrets.KEY_VAULT }}
 on:
   push:
     branches:

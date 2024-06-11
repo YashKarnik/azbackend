@@ -24,9 +24,9 @@ public class SecretsConfig {
         System.out.println("clientSecret=" + clientSecret);
         System.out.println("tenantId=" + tenantId);
         ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(System.getenv("CLIENT_ID"))
-                .clientSecret(System.getenv("CLIENT_SECRET"))
-                .tenantId(System.getenv("TENANT_ID"))
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .tenantId(tenantId)
                 .build();
 
         String keyVaultName = System.getenv("KEY_VAULT");

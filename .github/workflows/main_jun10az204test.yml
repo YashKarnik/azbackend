@@ -3,11 +3,6 @@
 
 name: Build and deploy JAR app to Azure Web App - Jun10Az204Test
 
-
-permissions:
-      id-token: write
-      contents: read
-      
 on:
   push:
     branches:
@@ -26,15 +21,11 @@ jobs:
         with:
           java-version: '21'
 
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_61A5C3E0D52A4500BC576B25D6791E39 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E9D1424CE50749078955D39DA89C8EDC }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_86317CEFBB9C49E696DE882B78C140B6 }}
-
-
       - name: Build with Maven
+        env: # Or as an environment variable
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job

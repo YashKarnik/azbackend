@@ -26,6 +26,11 @@ public class Controller {
         return "ECHOing";
     }
 
+    @GetMapping("/getenv")
+    public String aab1b() {
+        return System.getenv("TEST_ENVVAR_FROM_AZURE");
+    }
+
     @GetMapping("/get")
     public List<String> aa() {
         List<String> a = new ArrayList<>();

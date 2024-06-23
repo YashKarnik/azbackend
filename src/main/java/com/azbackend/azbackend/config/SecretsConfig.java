@@ -23,8 +23,11 @@ public class SecretsConfig {
     private String keyVaultDatabaseUsernameKey;
     @Value("${key-vault.secrets.key.database_password}")
     private String keyVaultDatabasePasswordKey;
+    @Value("${key-vault.secrets.key.redis_access_key}")
+    private String keyVaultRedisSASTokenKey;
 
     private final ClientSecretCredential clientSecretCredential;
+
     @Bean
     public SecretsModel getSecrets() {
         return getSecretsFromKKeyVault();
@@ -39,7 +42,9 @@ public class SecretsConfig {
         KeyVaultSecret postgresServer = secretClient.getSecret(keyVaultDatabaseUrlKey);
         KeyVaultSecret postgresUsername = secretClient.getSecret(keyVaultDatabaseUsernameKey);
         KeyVaultSecret postgresDbPassword = secretClient.getSecret(keyVaultDatabasePasswordKey);
-        SecretsModel secretsModel = new SecretsModel(postgresUsername.getValue(), postgresDbPassword.getValue(), postgresServer.getValue());
+        KeyVaultSecret keyVaultRedisAccessKey = secretClient.getSecret(keyVaultRedisSASTokenKey);
+
+        SecretsModel secretsModel = new SecretsModel(postgresUsername.getValue(), postgresDbPassword.getValue(), postgresServer.getValue(), keyVaultRedisAccessKey.getValue());
         return secretsModel;
     }
 }

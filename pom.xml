@@ -78,6 +78,12 @@
             <artifactId>applicationinsights-runtime-attach</artifactId>
             <version>3.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+
+            <type>jar</type>
+        </dependency>
 
 
     </dependencies>

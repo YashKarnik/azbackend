@@ -1,5 +1,6 @@
 package com.azbackend.azbackend;
 
+import com.azbackend.azbackend.Pojos.Models.PostgresPostRequestModal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,19 +19,19 @@ public class PostgresController {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @GetMapping("/get")
-    public List<String> get() {
-        List<String> a = new ArrayList<>();
+    public List<PostgresPostRequestModal> get() {
+        List<PostgresPostRequestModal> a = new ArrayList<>();
         namedParameterJdbcTemplate.query("select * from blog b where title ='AZ_204_TEST'", (e) -> {
-            String mail = e.getString("content");
-            a.add(mail);
+            PostgresPostRequestModal postgresPostRequestModal = new PostgresPostRequestModal(e.getString("content"));
+            a.add(postgresPostRequestModal);
         });
         return a;
     }
 
     @PostMapping("/insert")
-    public void insert(@RequestBody String content) {
+    public void insert(@RequestBody PostgresPostRequestModal request) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("content", content);
+        params.addValue("content", request.getContent());
         namedParameterJdbcTemplate.update("insert into blog (userid,title,content) values (1,'AZ_204_TEST',:content)", params);
 
     }

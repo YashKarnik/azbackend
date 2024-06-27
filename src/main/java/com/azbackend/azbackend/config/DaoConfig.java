@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.Jedis;
 
 @Configuration
 @RequiredArgsConstructor
@@ -35,12 +33,12 @@ public class DaoConfig {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 
-    @Bean
-    public Jedis setjedis() {
-        return new Jedis(azureRedisHost, azureRedisPort, DefaultJedisClientConfig.builder()
-                .password(secretsModel.redisAccessKey())
-                .ssl(true)
-                .build());
-    }
+//    @Bean
+//    public Jedis setjedis() {
+//        return new Jedis(azureRedisHost, azureRedisPort, DefaultJedisClientConfig.builder()
+//                .password(secretsModel.redisAccessKey())
+//                .ssl(true)
+//                .build());
+//    }
 
 }

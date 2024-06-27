@@ -1,0 +1,84 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Redis_yasyredistest_name": {
+      "defaultValue": "yasyredistest",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Cache/Redis",
+      "apiVersion": "2024-03-01",
+      "name": "[parameters('Redis_yasyredistest_name')]",
+      "location": "East US",
+      "properties": {
+        "redisVersion": "6.0",
+        "sku": {
+          "name": "Basic",
+          "family": "C",
+          "capacity": 0
+        },
+        "enableNonSslPort": false,
+        "publicNetworkAccess": "Enabled",
+        "redisConfiguration": {
+          "aad-enabled": "true",
+          "maxclients": "256",
+          "maxmemory-reserved": "30",
+          "maxfragmentationmemory-reserved": "30",
+          "maxmemory-delta": "30"
+        },
+        "updateChannel": "Stable",
+        "disableAccessKeyAuthentication": false
+      }
+    },
+    {
+      "type": "Microsoft.Cache/Redis/accessPolicies",
+      "apiVersion": "2024-03-01",
+      "name": "[concat(parameters('Redis_yasyredistest_name'), '/Data Contributor')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_yasyredistest_name'))]"
+      ],
+      "properties": {
+        "permissions": "+@all -@dangerous +cluster|info +cluster|nodes +cluster|slots allkeys"
+      }
+    },
+    {
+      "type": "Microsoft.Cache/Redis/accessPolicies",
+      "apiVersion": "2024-03-01",
+      "name": "[concat(parameters('Redis_yasyredistest_name'), '/Data Owner')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_yasyredistest_name'))]"
+      ],
+      "properties": {
+        "permissions": "+@all allkeys"
+      }
+    },
+    {
+      "type": "Microsoft.Cache/Redis/accessPolicies",
+      "apiVersion": "2024-03-01",
+      "name": "[concat(parameters('Redis_yasyredistest_name'), '/Data Reader')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_yasyredistest_name'))]"
+      ],
+      "properties": {
+        "permissions": "+@read +@connection +cluster|info +cluster|nodes +cluster|slots allkeys"
+      }
+    },
+    {
+      "type": "Microsoft.Cache/Redis/accessPolicyAssignments",
+      "apiVersion": "2024-03-01",
+      "name": "[concat(parameters('Redis_yasyredistest_name'), '/c35c1ac0-6149-4668-8f56-f6397b3e0f90')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cache/Redis', parameters('Redis_yasyredistest_name'))]"
+      ],
+      "properties": {
+        "accessPolicyName": "Data Owner",
+        "objectId": "c35c1ac0-6149-4668-8f56-f6397b3e0f90",
+        "objectIdAlias": "javatesAD"
+      }
+    }
+  ]
+}
